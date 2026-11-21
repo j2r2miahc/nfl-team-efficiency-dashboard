@@ -4,9 +4,9 @@
 
 A 4-page Power BI dashboard built on 18,000+ plays of 2026 NFL play-by-play data from [nflverse](https://github.com/nflverse). It compares how well teams actually play (EPA per play) with their win-loss records (Pythagorean expected wins) to separate legitimately good teams from lucky ones.
 
-📄 **[View the full dashboard (PDF)](docs/NFL_Team_Efficiency_Dashboard.pdf)**
+📄 **[View the full dashboard (PDF)](NFL%20Team%20Efficiency%20Dashboard.pdf)**
 
-![League Overview](images/page1_league_overview.png)
+![League Overview](page1_league_overview.png)
 
 ---
 
@@ -33,8 +33,8 @@ A **"Plays included" toggle** lets viewers exclude garbage time (plays where eit
 
 | | |
 |---|---|
-| ![Team Deep Dive](images/page2_team_deep_dive.png) | ![Situational](images/page3_situational.png) |
-| ![Record vs. Efficiency](images/page4_record_vs_efficiency.png) | |
+| ![Team Deep Dive](page2_team_deep_dive.png) | ![Situational](page3_situational.png) |
+| ![Record vs. Efficiency](page4_record_vs_efficiency.png) | |
 
 ---
 
@@ -48,7 +48,7 @@ A **"Plays included" toggle** lets viewers exclude garbage time (plays where eit
 | **Pythagorean expected wins** | Wins a team "should" have based on points scored and allowed (exponent 2.37) |
 | **Win Gap** | Actual wins − expected wins (positive = lucky, negative = unlucky) |
 
-Full definitions: [docs/kpi_definitions.md](docs/kpi_definitions.md)
+Full definitions: [kpi_definitions.md](kpi_definitions.md)
 
 ---
 
@@ -58,10 +58,10 @@ Full definitions: [docs/kpi_definitions.md](docs/kpi_definitions.md)
 nflverse (nflreadr in R)  →  CSVs  →  Power Query (cleaning)  →  Star schema  →  DAX measures  →  4 report pages
 ```
 
-1. **Data extraction (R):** [`R/01_download_data.R`](R/01_download_data.R) pulls 2026 regular-season play-by-play, schedules, and team info with `nflreadr`, trims 372 columns to the 33 needed, validates that every team code matches across tables, and exports three CSVs.
-2. **Cleaning (Power Query / M):** filtered to scrimmage plays (passes and runs — removing special teams, penalties, kneel-downs, and spikes), and reshaped the schedule from one row per game into one row per team per game. Details: [docs/power_query.md](docs/power_query.md)
+1. **Data extraction (R):** [`01_download_data.R`](01_download_data.R) pulls 2026 regular-season play-by-play, schedules, and team info with `nflreadr`, trims 372 columns to the 33 needed, validates that every team code matches across tables, and exports three CSVs.
+2. **Cleaning (Power Query / M):** filtered to scrimmage plays (passes and runs — removing special teams, penalties, kneel-downs, and spikes), and reshaped the schedule from one row per game into one row per team per game. Details: [power_query.md](power_query.md)
 3. **Data model:** star schema with two fact tables (`plays`, `team_games`) and two dimensions (`teams`, `games`). Because every play involves both an offense and a defense, `plays[posteam]` has an active relationship to `teams` and `plays[defteam]` an inactive one, switched on in DAX with `USERELATIONSHIP`.
-4. **DAX:** 30 measures across efficiency, record, situational stats, league ranks, and rolling trends, organized into display folders. All core measures were validated against an independent Python calculation. Full code: [docs/dax_measures.md](docs/dax_measures.md)
+4. **DAX:** 30 measures across efficiency, record, situational stats, league ranks, and rolling trends, organized into display folders. All core measures were validated against an independent Python calculation. Full code: [dax_measures.md](dax_measures.md)
 5. **Report:** 4 pages designed around one question each, built in the Power BI service.
 
 **Tools:** R (nflreadr, dplyr, readr) · Power BI (Power Query/M, DAX, data modeling) · Python (validation)
@@ -85,10 +85,10 @@ nflverse (nflreadr in R)  →  CSVs  →  Power Query (cleaning)  →  Star sche
 
 ## How to refresh
 
-1. Run `R/01_download_data.R` to download the latest weeks.
+1. Run `01_download_data.R` to download the latest weeks.
 2. Replace the three CSVs in the OneDrive folder the Power BI semantic model reads from.
 3. Refresh the semantic model in the Power BI service. All measures, ranks, and verdicts update automatically.
 
 ---
 
-**Author:** [Your name] · [LinkedIn] · Data: [nflverse](https://github.com/nflverse) via [nflreadr](https://nflreadr.nflverse.com/)
+**Author:** Jeremiah Cordero · Data: [nflverse](https://github.com/nflverse) via [nflreadr](https://nflreadr.nflverse.com/)
